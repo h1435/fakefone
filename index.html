@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Fake Phone Number Generator - Generate Random US Phone Numbers</title>
+  <meta name="description" content="Generate random fake US phone numbers instantly. Free online fake phone number generator for testing, forms and demos. No signup required.">
+  <style>
+    :root {
+      --bg-color: #f8fafc;
+      --card-bg: #ffffff;
+      --text-main: #0f172a;
+      --text-muted: #64748b;
+      --border-color: #e2e8f0;
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-active: #1e40af;
+      --success: #16a34a;
+      --radius-sm: 8px;
+      --radius-md: 12px;
+      --radius-lg: 16px;
+      --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.05), 0 1px 2px rgba(0, 0, 0, 0.03);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.07), 0 2px 4px -2px rgba(0, 0, 0, 0.05);
+      --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.04);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px 16px;
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 580px;
+      background: var(--card-bg);
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      box-shadow: var(--shadow-lg);
+      padding: 40px 32px;
+      text-align: center;
+    }
+
+    header {
+      margin-bottom: 32px;
+    }
+
+    h1 {
+      font-size: 1.85rem;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      color: var(--text-main);
+      margin-bottom: 12px;
+    }
+
+    .description {
+      font-size: 0.975rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    .generator-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 20px;
+      margin-bottom: 24px;
+    }
+
+    .number-display-box {
+      width: 100%;
+      background-color: #f1f5f9;
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      min-height: 72px;
+      box-shadow: var(--shadow-sm);
+      transition: border-color 0.2s, background-color 0.2s;
+    }
+
+    .number-display-box:focus-within {
+      border-color: var(--primary);
+    }
+
+    .number-text {
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+      font-size: 1.5rem;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      color: var(--text-main);
+      word-break: break-all;
+      user-select: all;
+    }
+
+    .number-text.placeholder {
+      font-size: 1.25rem;
+      color: #94a3b8;
+      font-weight: 500;
+      user-select: none;
+    }
+
+    .actions-wrap {
+      display: flex;
+      align-items: center;
+      position: relative;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 600;
+      border-radius: var(--radius-md);
+      border: none;
+      cursor: pointer;
+      transition: all 0.15s ease-in-out;
+      outline: none;
+    }
+
+    .btn:focus-visible {
+      outline: 2px solid var(--primary);
+      outline-offset: 2px;
+    }
+
+    .btn-copy {
+      padding: 10px 16px;
+      font-size: 0.875rem;
+      background-color: #ffffff;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-sm);
+      box-shadow: var(--shadow-sm);
+      gap: 6px;
+      white-space: nowrap;
+      min-width: 82px;
+    }
+
+    .btn-copy:hover:not(:disabled) {
+      background-color: #f8fafc;
+      border-color: #cbd5e1;
+    }
+
+    .btn-copy:active:not(:disabled) {
+      background-color: #e2e8f0;
+      transform: scale(0.98);
+    }
+
+    .btn-copy:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-copy.copied {
+      background-color: #dcfce7;
+      color: var(--success);
+      border-color: #86efac;
+    }
+
+    .btn-generate {
+      width: 100%;
+      padding: 16px 28px;
+      font-size: 1.125rem;
+      background-color: var(--primary);
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.25);
+    }
+
+    .btn-generate:hover {
+      background-color: var(--primary-hover);
+      box-shadow: 0 6px 16px rgba(37, 99, 235, 0.32);
+      transform: translateY(-1px);
+    }
+
+    .btn-generate:active {
+      background-color: var(--primary-active);
+      transform: translateY(0);
+      box-shadow: 0 2px 6px rgba(37, 99, 235, 0.2);
+    }
+
+    .badge-toast {
+      position: absolute;
+      top: -34px;
+      right: 0;
+      background: #0f172a;
+      color: #ffffff;
+      font-size: 0.75rem;
+      font-weight: 500;
+      padding: 4px 8px;
+      border-radius: 4px;
+      box-shadow: var(--shadow-sm);
+      pointer-events: none;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+
+    .badge-toast.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .badge-toast::after {
+      content: "";
+      position: absolute;
+      bottom: -4px;
+      right: 18px;
+      border-width: 4px 4px 0 4px;
+      border-style: solid;
+      border-color: #0f172a transparent transparent transparent;
+    }
+
+    .notice {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border-color);
+      padding-top: 20px;
+      margin-top: 8px;
+      line-height: 1.5;
+    }
+
+    @media (max-width: 480px) {
+      .container {
+        padding: 28px 20px;
+      }
+
+      h1 {
+        font-size: 1.5rem;
+      }
+
+      .number-text {
+        font-size: 1.25rem;
+      }
+
+      .number-display-box {
+        padding: 14px 16px;
+      }
+
+      .btn-generate {
+        font-size: 1rem;
+        padding: 14px 20px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <main class="container">
+    <header>
+      <h1>Fake Phone Number Generator</h1>
+      <p class="description">
+        Quickly generate random, realistic US phone numbers formatted for registration forms, UI mockups, QA testing, and software development.
+      </p>
+    </header>
+
+    <div class="generator-card">
+      <!-- Phone number display box (located above the Generate button) -->
+      <div class="number-display-box" id="displayBox">
+        <span class="number-text" id="phoneNumber" aria-live="polite">(---) --- ----</span>
+        <div class="actions-wrap">
+          <div class="badge-toast" id="copiedBadge" role="status">Copied!</div>
+          <button class="btn btn-copy" id="copyBtn" type="button" aria-label="Copy phone number" disabled>
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+              <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>
+            </svg>
+            <span id="copyBtnText">Copy</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Large Generate button in the center -->
+      <button class="btn btn-generate" id="generateBtn" type="button">
+        Generate
+      </button>
+    </div>
+
+    <footer class="notice">
+      Disclaimer: All generated phone numbers are randomly composed for testing and demo purposes only.
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      // Common US Area Codes across states
+      const US_AREA_CODES = [
+        '201', '202', '203', '206', '212', '213', '214', '215', '216', '217',
+        '301', '302', '303', '305', '310', '312', '313', '314', '317', '323',
+        '404', '405', '407', '408', '412', '415', '425', '480',
+        '503', '504', '510', '512', '516', '559', '571',
+        '602', '612', '614', '615', '617', '619', '626', '650',
+        '702', '703', '704', '713', '714', '718', '773',
+        '801', '805', '813', '818', '832', '847', '858',
+        '904', '916', '917', '919', '925', '949', '972', '973'
+      ];
+
+      const phoneNumberEl = document.getElementById('phoneNumber');
+      const copyBtn = document.getElementById('copyBtn');
+      const copyBtnText = document.getElementById('copyBtnText');
+      const copiedBadge = document.getElementById('copiedBadge');
+      const generateBtn = document.getElementById('generateBtn');
+
+      let currentNumber = '';
+      let copyResetTimeout = null;
+
+      // Helper: Generate random integer inclusive [min, max]
+      function getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+      }
+
+      // Generate a realistic US phone number formatted as (XXX) XXX-XXXX
+      function generateUSPhoneNumber() {
+        const areaCode = US_AREA_CODES[Math.floor(Math.random() * US_AREA_CODES.length)];
+        // Exchange code cannot start with 0 or 1 in standard NANP
+        const exchangeCode = getRandomInt(200, 999);
+        const subscriberNumber = String(getRandomInt(0, 9999)).padStart(4, '0');
+        return `(${areaCode}) ${exchangeCode}-${subscriberNumber}`;
+      }
+
+      function updateNumber() {
+        currentNumber = generateUSPhoneNumber();
+        phoneNumberEl.textContent = currentNumber;
+        phoneNumberEl.classList.remove('placeholder');
+        copyBtn.disabled = false;
+      }
+
+      async function copyToClipboard() {
+        if (!currentNumber) return;
+
+        let success = false;
+        if (navigator.clipboard && window.isSecureContext) {
+          try {
+            await navigator.clipboard.writeText(currentNumber);
+            success = true;
+          } catch (err) {
+            // Fallback below
+          }
+        }
+
+        if (!success) {
+          const textarea = document.createElement('textarea');
+          textarea.value = currentNumber;
+          textarea.style.position = 'fixed';
+          textarea.style.left = '-999999px';
+          textarea.style.top = '-999999px';
+          document.body.appendChild(textarea);
+          textarea.focus();
+          textarea.select();
+          try {
+            success = document.execCommand('copy');
+          } catch (err) {
+            success = false;
+          }
+          document.body.removeChild(textarea);
+        }
+
+        if (success) {
+          showCopiedFeedback();
+        }
+      }
+
+      function showCopiedFeedback() {
+        if (copyResetTimeout) {
+          clearTimeout(copyResetTimeout);
+        }
+
+        copyBtn.classList.add('copied');
+        copyBtnText.textContent = 'Copied!';
+        copiedBadge.classList.add('visible');
+
+        copyResetTimeout = setTimeout(function () {
+          copyBtn.classList.remove('copied');
+          copyBtnText.textContent = 'Copy';
+          copiedBadge.classList.remove('visible');
+          copyResetTimeout = null;
+        }, 2000);
+      }
+
+      generateBtn.addEventListener('click', updateNumber);
+      copyBtn.addEventListener('click', copyToClipboard);
+
+      // Auto-generate one number upon initial loading
+      updateNumber();
+    })();
+  </script>
+</body>
+</html>
